@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:state_management_flutter_week/redux/app_store.dart';
 
 void main() {
   runApp(MyApp());
@@ -53,14 +54,15 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
-    setState(() {
+    appStore.dispatcher(AppAction.increment);
+    /*setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
-    });
+    });*/
   }
 
   @override
@@ -100,9 +102,14 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               'You have pushed the button this many times:',
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            AnimatedBuilder(
+              animation: appStore,
+              builder: (_, __) {
+                return Text(
+                  '${appStore.state.value}',
+                  style: Theme.of(context).textTheme.headline4,
+                );
+              },
             ),
           ],
         ),

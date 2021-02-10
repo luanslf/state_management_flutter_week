@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:state_management_flutter_week/bloc/app_bloc.dart';
+import 'package:state_management_flutter_week/mobx/app_mobx_store.dart';
 //import 'package:state_management_flutter_week/redux/app_store.dart';
 
 void main() {
@@ -31,10 +33,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   //int _counter = 0;
-  final appBloc = AppBloc();
+  //final appBloc = AppBloc();
+  final appMobXStore = AppMobXStore();
 
   void _incrementCounter() {
-    appBloc.add(AppEvent.increment);
+    appMobXStore.increment();
+    //appBloc.add(AppEvent.increment);
     //appStore.dispatcher(AppAction.increment);
     /*setState(() {
       _counter++;
@@ -50,7 +54,15 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text('You have pushed the button this many times:'),
-            StreamBuilder(
+            Observer(
+              builder: (_) {
+                return Text(
+                  '${appMobXStore.counter.value.toString()}',
+                  style: Theme.of(context).textTheme.headline4,
+                );
+              },
+            ),
+            /*StreamBuilder(
               stream: appBloc,
               builder: (_, __) {
                 return Text(
@@ -58,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: Theme.of(context).textTheme.headline4,
                 );
               },
-            ),
+            ),*/
             /*AnimatedBuilder(
               animation: appStore,
               builder: (_, __) {
